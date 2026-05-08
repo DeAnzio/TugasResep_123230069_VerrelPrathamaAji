@@ -1,35 +1,51 @@
 // lib/services/favorite_service.dart
 import 'package:hive_flutter/hive_flutter.dart';
 import '../models/meal.dart';
+import 'auth_service.dart';
 
 class FavoriteService {
-  static const String _boxName = 'favorites';
+  static const String _boxNamePrefix = 'favorites_';
 
-  static Box<Meal> get _box => Hive.box<Meal>(_boxName);
+  static Future<Box<Meal>> _getBox() async {
+    final currentUser = await AuthService.getCurrentUser();
+    if (currentUser == null) {
+      throw Exception('User not logged in');
+    }
+    final boxName = '$_boxNamePrefix$currentUser';
+    if (!Hive.isBoxOpen(boxName)) {
+      await Hive.openBox<Meal>(boxName);
+    }
+    return Hive.box<Meal>(boxName);
+  }
 
   /// Tambahkan ke favorit
   static Future<void> addFavorite(Meal meal) async {
-    await _box.put(meal.idMeal, meal);
+    final box = await _getBox();
+    await box.put(meal.idMeal, meal);
   }
 
   /// Hapus dari favorit
   static Future<void> removeFavorite(String idMeal) async {
-    await _box.delete(idMeal);
+    final box = await _getBox();
+    await box.delete(idMeal);
   }
 
   /// Cek apakah sudah difavoritkan
-  static bool isFavorite(String idMeal) {
-    return _box.containsKey(idMeal);
+  static Future<bool> isFavorite(String idMeal) async {
+    final box = await _getBox();
+    return box.containsKey(idMeal);
   }
 
   /// Ambil semua favorit
-  static List<Meal> getAllFavorites() {
-    return _box.values.toList();
+  static Future<List<Meal>> getAllFavorites() async {
+    final box = await _getBox();
+    return box.values.toList();
   }
 
   /// Toggle favorit
   static Future<bool> toggleFavorite(Meal meal) async {
-    if (isFavorite(meal.idMeal)) {
+    final isFav = await isFavorite(meal.idMeal);
+    if (isFav) {
       await removeFavorite(meal.idMeal);
       return false;
     } else {

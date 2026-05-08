@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Mau masak apa\nhari ini? 🍳',
+                'Mo makan apa hari ini dawg?',
                 style: TextStyle(
                   fontFamily: 'Georgia',
                   fontSize: 22,

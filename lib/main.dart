@@ -123,7 +123,7 @@ class _SplashScreenState extends State<SplashScreen>
                 ),
                 const SizedBox(height: 20),
                 const Text(
-                  'MealExplorer',
+                  'ResepKu',
                   style: TextStyle(
                     fontFamily: 'Georgia',
                     fontSize: 32,

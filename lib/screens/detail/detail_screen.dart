@@ -36,12 +36,13 @@ class _DetailScreenState extends State<DetailScreen> {
     try {
       final meal = await ApiService.fetchMealById(widget.mealId);
       if (mounted) {
+        final isFav = meal != null
+            ? await FavoriteService.isFavorite(meal.idMeal)
+            : false;
         setState(() {
           _meal = meal;
           _isLoading = false;
-          _isFavorite = meal != null
-              ? FavoriteService.isFavorite(meal.idMeal)
-              : false;
+          _isFavorite = isFav;
         });
       }
     } catch (e) {

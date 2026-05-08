@@ -86,7 +86,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
             const SizedBox(width: 10),
             const Text(
-              'MealExplorer',
+              'ResepKu',
               style: TextStyle(
                 fontFamily: 'Georgia',
                 fontWeight: FontWeight.bold,
