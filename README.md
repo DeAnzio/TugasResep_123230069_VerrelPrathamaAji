@@ -1,3 +1,4 @@
 # tugas_prakmobile
 
-A new Flutter project.
+Ini adalah tugas praktikum mobile
+
